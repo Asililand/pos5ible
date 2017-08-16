@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.edu.pos5ible.dao.ForumCommentDao">
+ 
+ <sql id="TableName">
+ 	FORUM_COMMENT_LIB
+ </sql>
+ 
+ <sql id="Field">
+ 	commentId,
+ 	id,
+ 	commentUserId,
+ 	commentContent,
+ 	commentDate,
+ 	likeNum,
+ 	unlikeNum
+ </sql>
+ 
+ <sql id="FieldValue">
+ 	#commentId,
+ 	#id,
+ 	#commentUserId,
+ 	#commentContent,
+ 	#commentDate,
+ 	#likeNum,
+ 	#unlikeNum
+ </sql>
+ 
+ <select id="findCommentById" resultType="com.edu.pos5ible.entity.Comment">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="TableName"></include>
+ 	where
+ 		id = #{0}
+ 	order by commentDate
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select>
+ 
+ <select id="findIsLike" resultType="integer">
+ 	select
+ 		isLike
+ 	from
+ 		forum_comment_is_like
+ 	where
+ 		userId = #{0}
+ 	and
+ 		commentId = #{1}
+ </select>
+ 
+ <insert id="addIsLike" parameterType="map">
+ 	insert into forum_comment_is_like
+ 		(userId, commentId, isLike)
+ 	values
+ 		(#{userId}, #{commentId}, #{isLike})
+ </insert>
+ 
+ <update id="updateIsLike" parameterType="map">
+ 	update forum_comment_is_like
+ 	set
+ 		isLike=#{isLike}
+ 	where
+ 		userId=#{userId}
+ 	and
+ 		commentId=#{commentId}
+ </update>
+ 
+<select id="findLikeNum" parameterType="integer">
+	select
+		likeNum
+	from
+		<include refid="TableName"></include>
+	where
+		commentId=#{commentId}
+</select>
+
+<select id="findUnlikeNum" parameterType="integer">
+	select
+		unlikeNum
+	from
+		<include refid="TableName"></include>
+	where
+		commentId=#{commentId}
+</select>
+
+<update id="alterLikeNum">
+	update
+		<include refid="TableName"></include>
+	set 
+		likeNum=#{number}
+	where
+		commentId=#{commentId}
+</update>
+
+<update id="alterUnlikeNum">
+	update
+		<include refid="TableName"></include>
+	set 
+		unlikeNum=#{number}
+	where
+		commentId=#{commentId}
+</update>
+
+ <insert id="addComment">
+ 	insert into forum_comment_lib
+ 		(commentUserId, id, commentContent)
+ 	values
+ 		(#{0}, #{1}, #{2})
+ 		
+ </insert> 
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 

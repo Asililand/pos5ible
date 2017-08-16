@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.edu.pos5ible.dao.BlogCommentDao">
+ 
+<!--  <sql id="tableName">
+ 	BLOG_COMMENT_LIB
+ </sql>
+ 
+ <sql id="Field">
+ 	commentId,
+ 	id,
+ 	commentUserId,
+ 	commentContent,
+ 	commentDate,
+ 	likeNum,
+ 	unlikeNum
+ </sql>
+ 
+ <sql id="FieldValue">
+ 	#commentId,
+ 	#id,
+ 	#commentUserId,
+ 	#commentContent,
+ 	#commentDate,
+ 	#likeNum,
+ 	#unlikeNum
+ </sql>
+ 
+ <select id="addCommentLikeNum" parameterType="integer" statementType="CALLABLE">
+ 	{
+ 		call add_comment_like_num(#{forumId,mode=IN,jdbcType=INTEGER})
+ 	}
+ </select> -->
+ </mapper>

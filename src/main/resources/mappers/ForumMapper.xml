@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.edu.pos5ible.dao.ForumDao">
+ 
+ <sql id="TableName">
+ 	FORUM_LIB
+ </sql>
+ 
+ <sql id="Field">
+ 	id,
+ 	userId,
+ 	createDate,
+ 	title,
+ 	content,
+ 	clickNum,
+ 	likeNum,
+ 	unlikeNum
+ </sql>
+ 
+ <sql id="FiledValue">
+  	#id,
+ 	#userId,
+ 	#createDate,
+ 	#title,
+ 	#content,
+ 	#clickNum,
+ 	#likeNum,
+ 	#unlikeNum
+ </sql>
+ 
+ <select id="findForumTime" parameterType="com.edu.pos5ible.entity.Page" resultType="com.edu.pos5ible.entity.Content">
+ 	select
+ 		<include refid="Field"></include>
+ 	from 
+ 		<include refid="TableName"></include>
+ 	order by createDate
+ 	limit
+ 		#{number},#{pagination}
+ </select>
+ 
+ <select id="findForumNum" parameterType="com.edu.pos5ible.entity.Page" resultType="com.edu.pos5ible.entity.Content">
+ 	select
+ 		<include refid="Field"></include>
+ 	from 
+ 		<include refid="TableName"></include>
+ 	order by clickNum desc
+ 	limit
+ 		#{number},#{pagination}
+ </select>
+ 
+ <select id="findForumByKwTime" resultType="com.edu.pos5ible.entity.Content">
+ 	select distinct
+ 		a.id,
+	 	a.userId,
+	 	a.createDate,
+	 	a.title,
+	 	a.content,
+	 	a.clickNum,
+	 	a.likeNum,
+	 	a.unlikeNum
+ 	from
+ 		<include refid="TableName"></include>
+ 	as a
+ 	join
+ 	forum_lib
+ 	as b
+ 	on a.id = b.forumId
+ 	where
+ 		a.title like #{0}
+ 	or
+ 		a.content like #{0}
+ 	or
+ 		b.forumTag like #{0}
+ 	order by a.createDate
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select>
+  
+ <select id="findForumByKwNum" resultType="com.edu.pos5ible.entity.Content">
+ 	select distinct
+ 		a.id,
+	 	a.userId,
+	 	a.createDate,
+	 	a.title,
+	 	a.content,
+	 	a.clickNum,
+	 	a.likeNum,
+	 	a.unlikeNum
+ 	from
+ 		<include refid="TableName"></include>
+ 	as a
+ 	join
+ 	forum_lib
+ 	as b
+ 	on a.id = b.forumId
+ 	where
+ 		a.title like #{0}
+ 	or
+ 		a.content like #{0}
+ 	or
+ 		b.forumTag like #{0}
+ 	order by a.clickNum desc
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select>
+ 
+ <select id="findForumByUserIdTime" resultType="com.edu.pos5ible.entity.Content">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="TableName"></include>
+ 	where
+ 		userId = #{0}
+ 	order by createDate
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select>
+ 
+ <select id="findForumByUserIdNum" resultType="com.edu.pos5ible.entity.Content">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="TableName"></include>
+ 	where
+ 		userId = #{0}
+ 	order by createDate
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select>
+ 
+ <select id="findForumById" parameterType="integer" resultType="com.edu.pos5ible.entity.Content">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="TableName"></include>
+ 	where
+ 		id = #{id}
+ </select>
+ 
+ <select id="findIsLike" resultType="integer">
+ 	select
+ 		isLike
+ 	from 
+ 		forum_is_like
+ 	where
+ 		userId = #{0}
+ 	and 
+ 		forumId = #{1}
+ </select>
+ 
+ <insert id="addForum" parameterType="com.edu.pos5ible.entity.Content">
+ 	insert into 
+ 		<include refid="TableName"></include>
+ 		(userId,title,content)
+ 	values
+ 		(#{userId}, #{title}, #{content})
+ </insert>
+ 
+ <insert id="addIsLike" parameterType="map">
+ 	insert into forum_is_like
+ 		(userId, forumId, isLike)
+ 	values
+ 		(#{userId}, #{forumId}, #{isLike})
+ </insert>
+ 
+ <update id="updateIsLike" parameterType="map">
+ 	update
+ 		forum_is_like
+ 	set
+ 		isLike = #{isLike}
+ 	where
+ 		userId = #{userId}
+ 	and
+ 		forumId = #{forumId}
+ </update>
+ 
+<select id="findClickNum" parameterType="integer" resultType="integer">
+	select
+		clickNum
+	from
+		<include refid="TableName"></include>
+	where
+		id=#{forumId}
+</select>
+
+<select id="findLikeNum" parameterType="integer" resultType="integer">
+	select
+		likeNum
+	from
+		<include refid="TableName"></include>
+	where
+		id=#{forumId}
+</select>
+
+<select id="findUnlikeNum" parameterType="integer" resultType="integer">
+	select
+		unlikeNum
+	from
+		<include refid="TableName"></include>
+	where
+		id=#{forumId}
+</select>
+ 
+ <update id="alterClickNum">
+ 	update
+ 		<include refid="TableName"></include>
+ 	set
+ 		clickNum=#{0}
+ 	where
+ 		id=#{1}
+ </update>
+ 
+  <update id="alterLikeNum">
+ 	update
+ 		<include refid="TableName"></include>
+ 	set
+ 		likeNum=#{0}
+ 	where
+ 		id=#{1}
+ </update>
+ 
+  <update id="alterUnlikeNum">
+ 	update
+ 		<include refid="TableName"></include>
+ 	set
+ 		unlikeNum=#{0}
+ 	where
+ 		id=#{1}
+ </update>
+ <select id="findForumTagById" parameterType="integer" resultType="string">
+ 	select
+ 		forumTag
+ 	from 
+ 		forum_tag
+ 	where 
+ 		forumId=#{id}
+ </select> 
+ 
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

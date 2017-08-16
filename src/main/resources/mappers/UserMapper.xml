@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.edu.pos5ible.dao.UserDao">
+ 
+ <sql id="tableName">
+ 	USER
+ </sql>
+ 
+ <sql id="Field">
+ 	userId,
+ 	password,
+ 	token,
+ 	phoneNum,
+ 	address,
+ 	gender,
+ 	authority,
+ 	qq,
+ 	email,
+ 	updateDate,
+ 	createDate,
+ 	userNick,
+ 	birthday,
+ 	userStatus
+ </sql>
+ 
+ <sql id="FieldValue">
+  	#userId,
+ 	#password,
+ 	#token,
+ 	#phoneNum,
+ 	#address,
+ 	#gender,
+ 	#authority,
+ 	#qq,
+ 	#email,
+ 	#updateDate,
+ 	#createDate,
+ 	#userNick,
+ 	#birthday,
+ 	#userStatus
+ </sql>
+ 
+ <select id="addUser" parameterType="com.edu.pos5ible.entity.User">
+ 	insert into 
+ 		<include refid="tableName"></include>
+ 		<include refid="Field"></include>
+ 	values 
+ 		<include refid="FieldValue"></include>
+ </select>
+ 
+ <select id="findUserByNick" parameterType="string" resultType="com.edu.pos5ible.entity.User">
+ 	select 
+ 		<include refid="Field"></include>
+ 	from 
+ 		<include refid="tableName"></include>
+ 	where 
+ 		userNick = #{userNick}
+ </select>
+ 
+ <select id="findUserById" parameterType="integer" resultType="com.edu.pos5ible.entity.User">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="tableName"></include>
+ 	where
+ 		userId = #{userId}
+ </select>
+ 
+ <select id="findUserByEmail" parameterType="string" resultType="com.edu.pos5ible.entity.User">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="tableName"></include>
+ 	where
+ 		email = #{email}
+ </select>
+ 
+ <update id="updateUser" parameterType="com.edu.pos5ible.entity.User">
+ 	update
+ 	<include refid="tableName"></include>
+ 	set
+ 		password = #{password},
+ 		token = #{token},
+ 		phoneNum = #{phoneNum},
+ 		address = #{address},
+ 		gender = #{gender},
+ 		qq = #{qq},
+ 		email = #{email},
+ 		userNick = #{userNick},
+ 		birthday = #{birthday},
+ 		userStatus = #{userStatus}
+ 	where
+ 		userId = #{userId}
+ </update>
+ 
+  <select id="findFollow" resultType="integer">
+ 	select
+ 		followId
+ 	from 
+ 		follower
+ 	where
+ 		userId = #{0}
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select> 
+ 
+  <select id="followerCount" parameterType="integer" resultType="integer">
+ 	select
+ 		count(userId)
+ 	form
+ 		follower
+ 	where
+ 		followId = #{followId}
+ </select>
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

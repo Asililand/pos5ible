@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.edu.pos5ible.dao.ForumReplyDao">
+  <sql id="TableName">
+ 	FORUM_REPLY_LIB
+ </sql>
+ 
+ <sql id="Field">
+ 	commentId,
+ 	replyUserId,
+ 	replyedUserId,
+ 	replyDate,
+ 	replyId,
+ 	replyContent
+ </sql>
+
+ <sql id="FieldValue">
+ 	#commentId,
+ 	#replyUserId,
+ 	#replyedUserId,
+ 	#replyDate,
+ 	#replyId,
+ 	#replyContent
+ </sql>
+ 
+ <select id="findReply" resultType="com.edu.pos5ible.entity.Reply">
+ 	select
+ 		<include refid="Field"></include>
+ 	from
+ 		<include refid="TableName"></include>
+ 	where
+ 		commentId = #{0}
+ 	order by replyDate
+ 	limit
+ 		#{1.number},#{1.pagination}
+ </select>
+ 
+ <insert id="addReply">
+ 	insert into 
+ 		<include refid="TableName"></include>
+ 		(commentId,	replyUserId, replyedUserId, replyContent)
+ 	values
+ 		(#{1.commentId}, #{0}, #{1.replyedUserId}, #{1.replyContent})
+ </insert> 
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
